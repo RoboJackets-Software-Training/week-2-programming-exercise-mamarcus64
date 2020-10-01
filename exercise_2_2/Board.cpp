@@ -8,7 +8,10 @@
  *  - Set winner to Empty
  */
 Board::Board() {
-  // TODO
+  for (int i = 0; i < data.size(); i++) {
+    data[i] = Marker::Empty;
+  }
+    winner = Marker::Empty;
 }
 
 /**
@@ -42,8 +45,7 @@ bool Board::placeMarker(int r, int c, Marker marker) {
  * @return marker contained at <r,c>
  */
 Marker Board::getMarker(int r, int c) {
-  // TODO using the helper return the marker at that location data[index]
-  // TODO use helper method locationToIndex
+  return data[locationToIndex(r, c)];
 }
 
 /**
@@ -52,7 +54,35 @@ Marker Board::getMarker(int r, int c) {
  * @note The game is over if no more moves can be made or if one player has won the game
  */
 bool Board::isOver() {
-  // TODO
+  //no more available spaces
+  if (!std::count(data.begin(), data.end(), Marker::Empty)) {
+    return true;
+  }
+  for (int r = 0; r < 3; r++) {
+    if (data[locationToIndex(r, 0)] == data[locationToIndex(r, 1)]
+      && data[locationToIndex(r, 0)] == data[locationToIndex(r, 2)]
+      && data[locationToIndex(r, 0)] != Marker::Empty) {
+      return true;
+    }
+  }
+  for (int c = 0; c < 3; c++) {
+    if (data[locationToIndex(0, c)] == data[locationToIndex(1, c)]
+      && data[locationToIndex(0, c)] == data[locationToIndex(2, c)]
+      && data[locationToIndex(0, c)] != Marker::Empty) {
+      return true;
+    }
+  }
+  if (data[locationToIndex(0, 0)] == data[locationToIndex(1, 1)]
+      && data[locationToIndex(0, 0)] == data[locationToIndex(2, 2)]
+      && data[locationToIndex(0, 0)] != Marker::Empty) {
+      return true;
+    }
+    if (data[locationToIndex(0, 2)] == data[locationToIndex(1, 1)]
+      && data[locationToIndex(0, 2)] == data[locationToIndex(2, 0)]
+      && data[locationToIndex(0, 2)] != Marker::Empty) {
+      return true;
+    }
+    return false;
 }
 
 /**
@@ -72,12 +102,7 @@ Marker Board::getWinner() {
  *       saved contiguously in data immediately following the row above it.
  */
 size_t Board::locationToIndex(int r, int c) {
-  // TODO what is the formula for the index into data based off of row and col?
-  // indexes of the board are
-  // data[0], data[1], data[2]
-  // data[3], data[4], data[5]
-  // data[6], data[7], data[8]
-  return 0;
+  return 3 * r + c;
 }
 
 /**
